@@ -16,18 +16,24 @@ constructor() {
   }
 }
 
+unsubscribeFromAuth = null
+
 componentDidMount() {
-  auth.onAuthStateChanged(user => {
+  this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
     this.setState({currentUser: user});
 
     console.log(user);
   });
 }
 
+componentWillUnmount() {
+  this.unsubscribeFromAuth()
+}
+
   render() {
     return (
       <div>
-      <Header />
+      <Header currentUser={this.state.currentUser} />
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/shop' element={<ShopPage/>} />
